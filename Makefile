@@ -1,25 +1,24 @@
 CXXFLAGS = -O2 -Wall -pedantic-errors -pedantic -std=c++14  `val-config --cflags` 
 LDFLAGS = -s `val-config --libs`
-OBJ = obj
 BIN = bin
 CXX = g++
 
 OBJECTS = dehomogenize eliminationmatrix groebner groebnerwalk hilbertconversion hilbertpolynomial homgroebner \
 			homogenize idealroots intersectideals isgroebner isinG minpol mod_minpolo radicalideal
   
-
-$(BIN)/ALL: create_dirs $(OBJECTS)
+.PHONY ALL:
+ 
+ALL: create_dirs $(OBJECTS)
 
 create_dirs:
-	mkdir -p $(OBJ) $(BIN)
+	mkdir -p $(BIN)
 
-$(OBJECTS) : % : src/%.cpp
-	${CXX} -c $(CXXFLAGS) src/$@.cpp -o ${OBJ}/$@.o
-	${CXX} -o ${BIN}/$@ ${OBJ}/$@.o $(LDFLAGS)
+$(OBJECTS): % : src/%.cpp
+	${CXX} $(CXXFLAGS) $(LDFLAGS) src/$@.cpp -o ${BIN}/$@
 
 
 .PHONY clean:
 
 clean:
-	rm -r -f $(OBJ) $(BIN)
+	rm -r -f $(BIN)
 
